@@ -85,7 +85,30 @@ void display_backward() {
         }
         cout << "NULL" << endl;
     };
+    
+void numberofnoodes(){
+    Node* temp=head;
+    int cnt=0;
+    while(temp!=NULL){
+        cnt++;
+        temp=temp->next;
+    }
+    cout << cnt <<endl;
+}
 
+
+void searchnode(int key){
+    Node* temp=head;
+    int idx = 0;
+    while(temp!=NULL){
+        idx++;
+        temp=temp->next;
+        if(temp->data==key){
+            cout<<temp->data<<endl;
+            cout<<idx<<endl;
+        }
+    }
+}
 // ----------------------------------------------DELETION METHON IN DOUBLY LINKED_LIST-------------------------------------------
 
 
@@ -163,9 +186,11 @@ int main(){
     ll.push_front(40);
     ll.push_back(1);
     ll.push_middle(3.3,3);
-    ll.delete_front();
-    ll.delete_last();
-    ll.display_forward();
-    ll.display_backward();
+    ll.searchnode(20);
+    // ll.delete_front();
+    // ll.delete_last();
+    // ll.display_forward();
+    // ll.display_backward();
+    // ll.numberofnoodes();
     
 }
