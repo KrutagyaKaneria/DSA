@@ -1,98 +1,135 @@
 #include <iostream>
 using namespace std;
+#include <vector>
 #include <queue>
 
-class Node {
-public:
-    int data;
-    Node* left;
-    Node* right;
 
-    Node(int value) {
-        data = value;
-        left = right = nullptr;
-    }
+
+
+
+
+
+class Node{
+public:
+   int data;
+   Node* left;
+   Node* right;
+
+   Node(int val){
+    data=val;
+    left=right=NULL;
+   }
+
 };
 
-// Recursive function to build tree from preorder traversal
-Node* buildTree(int preorder[], int& idx, int length) {
+// BUILD A BINARY TREE 
+
+static int idx = -1;
+Node* buildTree(vector<int> preorder){
     idx++;
-    if (idx >= length || preorder[idx] == -1) {
-        return nullptr;
+
+    if (idx >= preorder.size() || preorder[idx] == -1) {
+        return NULL;
     }
-    
 
     Node* root = new Node(preorder[idx]);
-    root->left = buildTree(preorder, idx, length);
-    root->right = buildTree(preorder, idx, length);
+    root->left= buildTree(preorder);
+    root->right= buildTree(preorder);
+
     return root;
+
 }
 
-// Preorder traversal print
-// void postorderTraversal(Node* root) {
-//     if (root == nullptr)
-//         return;
-//     preorderTraversal(root->left);
-//     preorderTraversal(root->right);
-//     cout << root->data << " ";
-// };
+// PREORDER TRAVERSING 
 
-void preorderTraversal(Node* root) {
-    if (root == nullptr)
-        return;
-    cout << root->data << " ";
-    preorderTraversal(root->left);
-    preorderTraversal(root->right);
-};
-
-// void intorderTraversal(Node* root) {
-//     if (root == nullptr)
-//         return;
-//     preorderTraversal(root->left);
-//     cout << root->data << " ";
-//     preorderTraversal(root->right);
-// };
-
-void levelorder(Node* root){
-    queue<Node*> q;
-    
-    q.push(root);
-    
-    int maxValue = root->data;
-    
-    while(q.size() > 0){
-        
-        Node* current = q.front();
-        q.pop();
-        
-        
-        if (current->data > maxValue) {
-            maxValue = current->data;
-        }
-        
-        cout << current->data << " ";
-        
-        if(current->left!=NULL){
-            q.push(current->left);
-        }
-        if(current->right!=NULL){
-            q.push(current->right);
-        }
+void preOrder(Node* root){
+    if(root == NULL){
+        return ;
     }
-    cout << maxValue << endl;
-    cout << endl;
-};
+    cout << root->data << endl;
+    preOrder(root->left);
+    preOrder(root->right);
 
-int main() {
-    int preorder[] = {1,2,4,-1,-1,5,8,-1,-1,9,-1,-1,3,-1,6,10,-1,-1,-1};
+}
 
-    int idx = -1;
-    int length = sizeof(preorder) / sizeof(preorder[0]);
+// INORDER TRAVESING
+void InOrder(Node* root){
+    if(root == NULL){
+        return ;
+    }
+    
+    InOrder(root->left);
+    cout << root->data << endl;
+    InOrder(root->right);
 
-    Node* root = buildTree(preorder, idx, length);
+}
 
-    cout << "Preorder Traversal: ";
-    // preorderTraversal(root);
-    levelorder(root);
+// POSTORDER TRAVESING
+void PostOrder(Node* root){
+    if(root == NULL){
+        return ;
+    }
+    
+    PostOrder(root->left);
+    PostOrder(root->right);
+    cout << root->data << endl;
+
+}
+
+// LEVELORDER TRAVERSING
+void LevelOrder(Node* root){
+    queue<Node*> q;
+    q.push(root);
+    q.push(NULL);
+
+    while(q.size() > 0) {
+        Node* curr = q.front();
+        q.pop();
+
+        if(curr == NULL){
+            if(!q.empty()) {
+                cout << endl;
+                q.push(NULL);
+                continue;
+            }else{
+                break;
+            }
+        }
+
+        cout << curr->data << "";
+
+        if(curr-> left != NULL){
+            q.push(curr->left);
+        }
+        if(curr-> right != NULL){
+            q.push(curr->right);
+        }
+
+    }
+    cout <<endl;
+}
+
+// HEIGHT OF A BINARY TREE
+
+int height(Node* root){
+    if(root == NULL){
+        return 0;
+    }
+
+    int lefHt = height(root->left);
+    int rightHt = height(root->right);
+    return max(lefHt,rightHt) + 1;
+}
+
+
+int main(){
+    vector<int> preorder = {1, 2, -1, -1, 3, 4, -1, -1, 5, -1, -1};
+
+    Node* root = buildTree(preorder);
+
+    // preOrder(root);
+    // InOrder(root);
+    // LevelOrder(root);
+    cout << height(root);
     return 0;
 }
